@@ -1,0 +1,200 @@
+<html>
+<head>
+<title> MY shopping page </title>
+<style>
+#h1tag
+{
+ text-align: center
+}
+
+ul{
+display:inline-block;
+list-style-type: none; 
+}
+
+span:before{
+    content:" "; 
+    display:inline-block; 
+    width:40px;
+}
+button
+{
+
+    height:18px;
+    width:90px;
+    border: 2px solid brown;
+  border-radius: 5px;
+}
+body {background-color:	LightBlue;}
+ 
+</style>
+</head>
+<body onload="start()" >
+
+
+<h1 id="h1tag"><font color="Purple">Shopping page</font></h1>
+
+<div id="divdisplay" >
+
+<ul id="ul1">
+<span></span>
+<li><h3> Product-name </li>
+<span></span>
+</ul>
+
+<ul id="ul2">
+<li><h3> Price </li>
+<span></span>
+</ul>
+
+<ul id="ul3">
+<li><h3> Quantity </li>
+<span></span>
+</ul>
+
+<ul id="ul4">
+<li><h3> Add to cart </li>
+<span></span>
+</ul>
+
+
+</div>
+<script>
+
+   var productarray=getstored();
+   var ulid="1"
+
+	var cart=[];
+	var cartiterator=0;
+	
+	function start()
+	{
+	
+
+	for(var j=0;j<productarray.length;j++)
+	displayproducts(productarray[j].name,document.getElementById("ul1"),0,0,productarray[j].roll);
+	
+	for(var j=0;j<productarray.length;j++)
+	displayproducts(productarray[j].price,document.getElementById("ul2"),0,0,productarray[j].roll);
+	
+	for(var j=0;j<productarray.length;j++)
+	displayproducts(productarray[j].quantity,document.getElementById("ul3"),1,0,productarray[j].roll);
+	
+	for(var j=0;j<productarray.length;j++)
+	displayproducts("Add to cart",document.getElementById("ul4"),0,1,productarray[j].roll);
+	
+	
+	}
+	function displayproducts(a,b,dropdown,button,productid)
+	{
+	 if(dropdown!=0)
+	 {
+	  
+	 var li=document.createElement("li");
+	 var dropmenu=document.createElement("select");
+	 var dropid="drop" + productid;
+	 dropmenu.setAttribute("id",dropid);
+	 dropmenu.setAttribute("style","width:50px;");
+	 dropmenu.textContent="quantity";
+	 dropmenu.setAttribute("size","1");
+	  
+		 for(var j=1;j<=a;j++)
+		 {
+		 var option=document.createElement("option");
+		 option.textContent=j;
+		 dropmenu.appendChild(option);
+		 }
+		 
+	 li.appendChild(dropmenu);
+	 b.appendChild(li);
+	 var br=document.createElement("br");
+	 b.appendChild(br);
+	 
+	 }
+	
+	else if(button==1)
+	{
+	var li=document.createElement("li");
+	
+	var button=document.createElement("button");
+	
+	//console.log(buttonid);
+	button.setAttribute("id",productid);
+	button.textContent=a;
+	
+	li.appendChild(button);
+	b.appendChild(li);
+	var br=document.createElement("br");
+	b.appendChild(br);
+	
+    button.addEventListener('click', function()
+    {
+    
+    add1(productid);
+    
+    });
+    
+	}
+			 
+	 else
+	 {
+	 var li=document.createElement("li");
+	 li.textContent=a;
+	 b.appendChild(li);
+	 var br=document.createElement("br");
+	 b.appendChild(br);
+	 }
+	 
+	}
+
+  function storedata()
+	{
+	
+	//console.log("hi");
+	localStorage.cart=JSON.stringify(cart);
+	
+	}
+
+    function add1(productid)
+	{
+	
+	for(var j=0;j<productarray.length;j++)
+	{
+	
+	if(productarray[j].roll==productid)
+	{
+	
+	cart.push(productarray[j]);
+	var x="drop" + productid;
+	console.log(document.getElementById(x).value);
+	cart[cart.length -1].quantity=document.getElementById(x).value;
+	storedata();
+	}
+	
+	}
+	
+	}
+
+ function getstored()
+     {
+     
+     if(!localStorage.data)
+     {
+     localStorage.data=JSON.stringify([]);
+     }
+     
+     return(JSON.parse(localStorage.data));
+     }
+     
+     
+     
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
