@@ -1,0 +1,631 @@
+<html>
+
+ <head>
+  <style>
+ body {background-color: green;}
+ 
+  #product {
+    position:absolute;
+     padding-top: 30px;
+     border-style: inset;
+    top: 50%;
+    left: 50%;
+    width:35em;
+    height:14em;
+    margin-top: -9em; 
+    margin-left: -15em;
+    background-color:powderblue;
+}
+#h1tag
+{
+ text-align: center
+}
+textarea
+{
+  border: 2px solid blue;
+    border-radius: 5px;
+}
+#searchbar
+{
+ border: 2px solid blue;
+    border-radius: 5px;
+}
+span
+{
+display: inline-block;
+  width: 150px;
+  text-align: right;
+}
+#submit,#cancel
+{
+ position:relative;
+ margin:5px;
+ top:10px;
+ right:10px;
+ left:170px;
+display: inline-block;
+  text-align: right;
+  border: 2px solid blue;
+  border-radius: 5px;
+}
+button
+{
+position:relative;
+ margin:1px;
+ top:-67px;
+ left:90px;
+  display: inline-block;
+  text-align: right;
+  border: 2px solid blue;
+  border-radius: 5px;
+}
+li
+{
+color:white;
+}
+
+  </style>
+    <title>Product list</title>
+    <meta charset="utf-8" /> 
+  </head>
+  
+ <body>
+ 
+ 
+ 	
+   <h1 id="h1tag" onclick="createpanel(null,null,null,null,null,null,null)" ><font color="yellow">Add Product</font></h1>
+   
+
+	<h2><font color="yellow">Products list</font></h2> 
+	<div id="productpanel" >
+	</div>
+	
+
+	<p id="demo"></p>
+	
+	   <script>
+      
+      var impid=1;
+      
+      var stored=getstored();
+     
+      var data =[];
+      
+      for(var j=0;j<stored.length;j++)
+      createlist(stored[j].name,stored[j].desc,stored[j].price,stored[j].quantity,stored[j].roll,0);
+      
+      impid=stored[stored.length -1].roll +1;
+      
+     function getstored()
+     {
+     
+     if(!localStorage.data)
+     {
+     localStorage.data=JSON.stringify([]);
+     }
+     
+     return(JSON.parse(localStorage.data));
+     }
+     
+   function createpanel(a,b,c,d,flag,index,editbuttonid)
+   {
+   
+  // console.log(a+b+c+d+flag);
+   
+   var panel=document.createElement("div");
+   panel.setAttribute("id","product");
+   
+   panel.setAttribute("style", "background-color:yellow;");
+   
+   var div1=document.createElement('div');
+   var label1=document.createElement('span');
+   label1.innerHTML="Name";
+   label1.setAttribute("id","label1");
+   div1.appendChild(label1);
+   var input1=document.createElement('textarea');
+   input1.innerHTML=a;
+   input1.setAttribute("rows","2");
+   input1.setAttribute("id","input1");
+   var p1=document.createElement('span');
+   p1.innerHTML="name cannot be empty";
+   p1.setAttribute("id","p1");
+   p1.style.display="none";
+   p1.style.color="red";
+   div1.appendChild(input1);
+   div1.appendChild(p1);
+   panel.appendChild(div1);
+
+   
+   var div2=document.createElement('div');
+   var label2=document.createElement('span');
+   label2.textContent="Description";
+    label2.setAttribute("id","label2");
+   div2.appendChild(label2); 
+   var input2=document.createElement('textarea');
+   input2.innerHTML=b;
+    input2.setAttribute("id","input2");
+    input2.setAttribute("rows","2");
+   div2.appendChild(input2);
+    var p2=document.createElement('span');
+    p2.setAttribute("id","p2");
+   p2.textContent="description cannot be empty";
+   p2.style.display="none";
+   p2.style.color="red";
+   div2.appendChild(p2);
+   panel.appendChild(div2);
+   
+   
+   var div3=document.createElement('div');
+   var label3=document.createElement('span');
+   label3.textContent="Price";
+    label3.setAttribute("id","label3");
+   div3.appendChild(label3); 
+   var input3=document.createElement('textarea');
+   input3.innerHTML=c;
+    input3.setAttribute("id","input3");
+    input3.setAttribute("rows","2");
+   div3.appendChild(input3);
+   var p3=document.createElement('span');
+   p3.setAttribute("id","p3");
+   p3.textContent="price cannot be empty";
+   p3.style.display="none";
+   p3.style.color="red";
+   div3.appendChild(p3);
+   panel.appendChild(div3);
+   
+   
+   
+   var div4=document.createElement('div');
+   var label4=document.createElement('span');
+    label4.setAttribute("id","label4");
+   label4.textContent="Quantity";
+   div4.appendChild(label4); 
+   var input4=document.createElement('textarea');
+   input4.innerHTML=d;
+    input4.setAttribute("id","input4");
+    input4.setAttribute("rows","2");
+   var p4=document.createElement('span');
+   p4.setAttribute("id","p4");
+   p4.textContent="quantity cannot be empty";
+   p4.style.display="none";
+   p4.style.color="red";
+   div4.appendChild(input4);
+    div4.appendChild(p4);
+   panel.appendChild(div4);
+
+
+ 
+	
+   var button1=document.createElement('button');
+  button1.setAttribute("id","submit");
+   
+    if(flag==null)
+   button1.textContent="submit";
+   
+   else
+   button1.textContent="edit";
+   
+   panel.appendChild(button1);
+     
+   
+   button1.addEventListener('click', function()
+   {
+   
+   check(flag,index,editbuttonid);
+   
+   }); 
+   
+
+   
+   var button2=document.createElement('button');
+   
+  button2.setAttribute("id", "cancel");
+   
+   button2.textContent="cancel";
+   panel.appendChild(button2);
+   
+   button2.addEventListener('click', cancel); 
+   
+   document.body.appendChild(panel);
+   }
+   
+   function editinarray(index,editbuttonid)
+   {
+   
+	var input1=document.getElementById("input1");
+	var input2=document.getElementById("input2");
+	var input3=document.getElementById("input3");
+	var input4=document.getElementById("input4");
+	
+	data[index].name=input1.value;
+	data[index].desc=input2.value;
+	data[index].price=input3.value;
+	data[index].quantity=input4.value;
+	
+	storedata();
+	/*for(var j=0;j<data.length;j++)
+    console.log(data[j].name+" "+data[j].desc+" "+data[j].price+" "+data[j].quantity);*/
+    
+    updatescreen(editbuttonid);
+    
+	cancel();
+   
+   }
+   
+   function updatescreen(editbuttonid)
+   {
+   var input1=document.getElementById("input1");
+	var input2=document.getElementById("input2");
+	var input3=document.getElementById("input3");
+	var input4=document.getElementById("input4");
+	
+   editbuttonid.parentNode.childNodes[0].childNodes[0].innerHTML=input1.value;
+   editbuttonid.parentNode.childNodes[0].childNodes[1].innerHTML=input2.value;
+   editbuttonid.parentNode.childNodes[0].childNodes[2].innerHTML=input3.value;
+   editbuttonid.parentNode.childNodes[0].childNodes[3].innerHTML=input4.value;
+   
+   }
+   
+   function check(editordelete,index,editbuttonid)
+   {
+ 	
+ 	
+ 	
+	var flag=0;
+	
+	var p1=document.getElementById("p1");
+	var p2=document.getElementById("p2");
+	var p3=document.getElementById("p3");
+	var p4=document.getElementById("p4");
+	
+	
+	var input1=document.getElementById("input1");
+	var input2=document.getElementById("input2");
+	var input3=document.getElementById("input3");
+	var input4=document.getElementById("input4");
+	
+	
+	
+	if(!input1.value)
+	{	
+	 if(p1.style.display=="none")
+	 p1.style.display="inline-block"; 
+      flag=1;  
+	}	
+	else
+	{
+	p1.style.display="none";
+	}
+	
+	if(!input2.value)
+	{
+	 if(p2.style.display=="none")
+	 p2.style.display="inline-block";
+       flag=1; 
+	}
+	else
+	{
+	p2.style.display="none";
+	}
+	
+	if(!input3.value)
+	{
+	 if(p3.style.display=="none")
+	 p3.style.display="inline-block";
+       flag=1;
+      
+	}
+	else
+	{
+	p3.style.display="none";
+	}
+	
+	if(!input4.value)
+	{
+	 if(p4.style.display=="none")
+	 p4.style.display="inline-block";
+	 
+       flag=1;
+	}
+	else
+	{
+	p4.style.display="none";
+	}
+	
+	if(flag==0 && editordelete==null)
+	{
+	console.log("i is " + impid);
+	createlist(input1.value,input2.value,input3.value,input4.value,impid,1);
+	impid++;
+	}
+	
+	else if(flag==0 && editordelete!=null)
+	editinarray(index,editbuttonid);
+	
+	}
+	
+	function createlist(a,b,c,d,e,previous)
+	{
+	
+	
+	var p1=document.getElementById("p1");
+	var p2=document.getElementById("p2");
+	var p3=document.getElementById("p3");
+	var p4=document.getElementById("p4");
+	
+	
+	var input1=document.getElementById("input1");
+	var input2=document.getElementById("input2");
+	var input3=document.getElementById("input3");
+	var input4=document.getElementById("input4");
+	
+	
+	var object=
+	{
+	roll:e,
+	name:a,
+	desc:b,
+	price:c,
+	quantity:d	
+	}
+	
+	
+	//console.log("hey");
+	data.push(object);
+	storedata();
+	
+	
+	var lis=document.createElement('div');
+	lis.setAttribute("id",object.roll);
+	
+	var productpanel=document.getElementById('productpanel');
+	
+	
+	var list=document.createElement("ul");
+	lis.appendChild(list);
+	
+	var l1=document.createElement('li');
+	//l1.textContent=input1.value;
+	l1.textContent=a;
+	list.appendChild(l1);
+	
+	var l2=document.createElement('li');
+	//l2.textContent=input2.value;
+	l2.textContent=b;
+	list.appendChild(l2);
+	
+	var l3=document.createElement('li');
+	//l3.textContent=input3.value;
+	l3.textContent=c;
+	list.appendChild(l3);
+	
+	var l4=document.createElement('li');
+	//l4.textContent=input4.value;
+	l4.textContent=d;
+	list.appendChild(l4);
+	
+	var delete1=document.createElement('button')
+    delete1.textContent="Delete";
+    var delname="del"+ e;
+    delete1.setAttribute("id",delname);
+   
+   
+  	var edit1=document.createElement('button')
+    edit1.textContent="Edit";
+    var editname="edit"+ e;
+    edit1.setAttribute("id",editname); 
+    
+     
+    
+
+    lis.appendChild(delete1);
+    lis.appendChild(edit1);
+    productpanel.appendChild(lis);
+    
+    if(!(document.getElementById("searchbar")))
+	{
+	
+	var searchbar=document.createElement("input");
+	searchbar.setAttribute("id","searchbar");
+	searchbar.placeholder="search here";
+	productpanel.insertBefore(searchbar,lis);
+	searchbar.addEventListener('keyup', searchf); 
+	
+	}
+  
+    var ab =document.getElementById(delname);
+   
+    var editbutton=document.getElementById(editname);
+    
+    editbutton.addEventListener('click', function()
+    {
+    
+    if(document.getElementById("product"))
+    cancel();
+    
+    var producttofind;  
+    var j;
+    for(j=0;j<data.length;j++)
+    {
+   
+       if(data[j].roll==editbutton.parentNode.getAttribute("id"))
+		{
+		  producttofind=data[j];
+		  break;
+		}
+		
+    }
+    
+    createpanel(producttofind.name,producttofind.desc,producttofind.price,producttofind.quantity,1,j,editbutton);
+    //console.log(producttofind.name+" "+producttofind.desc+" "+producttofind.price+" "+producttofind.quantity);
+    
+    });
+      
+    ab.addEventListener('click', function()
+    {
+    
+     //console.log(ab.parentNode.getAttribute("id"));
+    
+    for(var j=0;j<data.length;j++)
+    {
+   
+    
+       if(data[j].roll==ab.parentNode.getAttribute("id"))
+		{
+		 //console.log("element found");
+		 data.splice(j,1);
+		 storedata();
+		}
+    }
+    
+    /*for(var j=0;j<data.length;j++)
+    {
+    
+    demo.innerHTML+=data[j].name;
+    }*/
+    
+    productpanel.removeChild(ab.parentNode);
+    
+    });
+	
+
+	
+	if(previous==1)
+	{
+	   input1.value="";
+	   input2.value="";
+	   input3.value="";
+	   input4.value="";
+	   flag=0;
+	   
+	   p1.style.display="none";
+	   	   
+	   p2.style.display="none";
+	   
+	   p3.style.display="none";
+	   
+	   p4.style.display="none";
+	}
+	
+	}
+	
+	
+	function storedata()
+	{
+	
+	//console.log("hi");
+	localStorage.data=JSON.stringify(data);
+	
+	}
+
+function cancel()
+{
+ 	var myNode = document.getElementById("product");
+ 	
+ 	product.parentNode.removeChild(myNode);
+ 	
+     /*while (myNode.firstChild) {
+    myNode.removeChild(myNode.firstChild);
+}*/
+
+}
+
+function searchf()
+{
+
+var searchbar=document.getElementById("searchbar");
+console.log(searchbar.value);
+
+
+if(searchbar.value)
+{
+
+ var searcharray =[];
+ var ii=0;
+ 
+ 
+	var a=new RegExp(searchbar.value,"i");
+	//console.log(a);
+ 
+ 	//console.log("length of data array is " + data.length);
+ 	
+	for(var j=0;j<data.length;j++)
+	{
+	
+	var ab=data[j].name;
+	//console.log("in array " + ab);
+	
+	 if(a.test(ab))
+	 {
+		searcharray[ii]=data[j];
+		//console.log("this name matches " +searcharray[ii].name);
+		ii++;
+	 }
+	 
+	}
+	
+	
+	
+	var productpanel=document.getElementById("productpanel");
+	//console.log(productpanel.childElementCount);
+	//console.log(searcharray.length);
+	if(!searcharray.length)
+	{
+	
+	
+	for(jj=2;jj<=productpanel.childElementCount;jj++)
+	{
+	productpanel.childNodes[jj].style.display="none";
+	}
+	
+	return;
+	
+	}
+	
+	for(jj=2;jj<=productpanel.childElementCount;jj++)
+	{
+	
+	//console.log("hi");
+	
+		for(var j=0;j<searcharray.length;j++)
+		{
+			
+		//console.log("product id is " +productpanel.childNodes[jj].getAttribute("id") + " searcharray id is "+searcharray[j].roll);
+	
+			if( productpanel.childNodes[jj].getAttribute("id") == searcharray[j].roll )
+			{
+			
+			//console.log(searcharray[j].name + " found");
+			productpanel.childNodes[jj].style.display="block";
+            break;
+            
+			}
+			else
+			{
+			
+			console.log("product not found");
+			productpanel.childNodes[jj].style.display="none";
+			
+			}
+		}
+	}
+}
+
+else
+{
+
+var productpanel=document.getElementById("productpanel");
+	for(jj=2;jj<=productpanel.childElementCount;jj++)
+	{
+	productpanel.childNodes[jj].style.display="block";
+	}
+}
+
+
+}
+   
+   </script>
+
+
+ </body>
+</html>
