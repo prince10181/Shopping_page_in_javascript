@@ -1,0 +1,118 @@
+<html>
+	<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+	body {background-color: grey;}
+	#div1 {
+    text-align: center;
+}
+
+.mainbutton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    
+}
+input[type=text],input[type=password] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#signinform
+{
+    align:"center";
+    border:"5px";
+    margin:"10px";
+    }
+</style>
+	</head>
+	    <body>
+	    <div id="div1">
+		<button id="button1" class="mainbutton" onclick="fun1()">Sign in</button>
+		<button id="button2" onclick="fun2()"  class="mainbutton">Sign up</button>
+		</div>
+		
+<script>
+
+
+   function fun1()
+   {
+   
+   if($("#signupform"))
+   $("#signupform").hide();
+   
+   
+     /*if($("#signinform"))
+     {
+     console.log("sign in from exists already");
+     $("#signinform").show();
+      return;
+     }*/
+   
+   
+   $("body ").append("<form id='signinform' ></form>");
+   console.log($("#signinform").html());
+   $("#signinform").append("<label >Name</label>");
+   $("#signinform").append("<br></br>");
+   $("#signinform").append("<input type='text' placeholder='Enter name'></input>");
+   $("#signinform").append("<br></br>");
+  $("#signinform").append("<label >Password</label>");
+    $("#signinform").append("<br></br>");
+   $("#signinform").append("<input type='password' placeholder='*******'></input>");
+     $("#signinform").append("<br></br>");
+   $("#signinform").append("<button type='submit' width='50%'>signin</button>");
+   
+   
+   
+   
+   
+   }
+   function fun2()
+   {
+   
+     if($("#signinform"))
+     $("#signinform").hide();
+   
+    /* if($("#signupform"))
+     {
+     console.log("sign up from exists already");
+     $("#signupform").show();
+      return;
+     }*/
+   
+  
+   
+   
+   $("body ").append("<form id='signupform' ></form>");
+   console.log($("#signupform").html());
+   $("#signupform").append("<label >Name</label>");
+   $("#signupform").append("<br></br>");
+   $("#signupform").append("<input type='text' placeholder='Enter name'></input>");
+   $("#signupform").append("<br></br>");
+   $("#signupform").append("<label >Email</label>");
+   $("#signupform").append("<br></br>");
+   $("#signupform").append("<input type='text' placeholder='xyz@xyz.com'></input>");
+   $("#signupform").append("<br></br>");
+  $("#signupform").append("<label >New Password</label>");
+    $("#signupform").append("<br></br>");
+   $("#signupform").append("<input type='password' placeholder='*******'></input>");
+   $("#signupform").append("<br></br>");
+   $("#signupform").append("<button type='submit' width='50%'>signup</button>");
+   $("#signupform").append("<br></br>");
+   
+   }
+
+
+</script>		
+		</body>
+</html>
