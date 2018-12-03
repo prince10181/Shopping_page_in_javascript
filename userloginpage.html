@@ -45,6 +45,16 @@ input[type=text],input[type=password] {
 <script>
 
 
+	var account=[];
+	
+	function storedata()
+	{
+	
+	//console.log("hi");
+	localStorage.account=JSON.stringify(account);
+	
+	}
+
    function fun1()
    {
    
@@ -61,16 +71,16 @@ input[type=text],input[type=password] {
    
    
    $("body ").append("<form id='signinform' ></form>");
-   console.log($("#signinform").html());
+   //console.log($("#signinform").html());
    $("#signinform").append("<label >Name</label>");
    $("#signinform").append("<br></br>");
-   $("#signinform").append("<input type='text' placeholder='Enter name'></input>");
+   $("#signinform").append("<input type='text' id='signinname' placeholder='Enter name'></input>");
    $("#signinform").append("<br></br>");
-  $("#signinform").append("<label >Password</label>");
-    $("#signinform").append("<br></br>");
-   $("#signinform").append("<input type='password' placeholder='*******'></input>");
-     $("#signinform").append("<br></br>");
-   $("#signinform").append("<button type='submit' width='50%'>signin</button>");
+   $("#signinform").append("<label >Password</label>");
+   $("#signinform").append("<br></br>");
+   $("#signinform").append("<input type='password'  id='signinpass' placeholder='*******'></input>");
+   $("#signinform").append("<br></br>");
+   $("#signinform").append("<button type='submit' id='siginpbutton' width='50%'>signin</button>");
    
    
    
@@ -94,23 +104,100 @@ input[type=text],input[type=password] {
    
    
    $("body ").append("<form id='signupform' ></form>");
-   console.log($("#signupform").html());
+   //console.log($("#signupform").html());
    $("#signupform").append("<label >Name</label>");
    $("#signupform").append("<br></br>");
-   $("#signupform").append("<input type='text' placeholder='Enter name'></input>");
+   $("#signupform").append("<input type='text' id='name' placeholder='Enter name'></input>");
    $("#signupform").append("<br></br>");
    $("#signupform").append("<label >Email</label>");
    $("#signupform").append("<br></br>");
-   $("#signupform").append("<input type='text' placeholder='xyz@xyz.com'></input>");
+   $("#signupform").append("<input type='text' id='email' placeholder='xyz@xyz.com'></input>");
    $("#signupform").append("<br></br>");
-  $("#signupform").append("<label >New Password</label>");
-    $("#signupform").append("<br></br>");
-   $("#signupform").append("<input type='password' placeholder='*******'></input>");
+   $("#signupform").append("<label >New Password</label>");
    $("#signupform").append("<br></br>");
-   $("#signupform").append("<button type='submit' width='50%'>signup</button>");
+   $("#signupform").append("<input type='password' id='pass' placeholder='*******'></input>");
+   $("#signupform").append("<br></br>");
+   $("#signupform").append("<button type='submit' id='signupbutton' width='50%'>signup</button>");
    $("#signupform").append("<br></br>");
    
+   
+   
+	$("#signupbutton").click(function(e)
+	{
+	
+	 e.preventDefault();
+	 
+	if(checkinputs("signup")!=1)
+	{
+   	return;
+   	}
+   	
+   	 
+	var object=
+	{
+	name:$("#name").val(),
+	email:$("#email").val(),
+	password:$("#pass").val()	
+	}
+	
+	account.push(object);	
+	storedata();
+	
+	
+	});
+	
+		console.log("hlooo");
+   
+   
    }
+   
+  function checkinputs(a)
+  {
+  
+  var flag=1;
+  
+  if(a="signup")
+  {
+  console.log("signup here");
+  
+	  if ($('#name').val() == '') {
+		$('#name').css('border-color', 'red');
+		flag=0;
+	}
+	
+	else {
+		$('#name').css('border-color', '');
+	}
+	
+	
+	if ($('#email').val() == '') {
+		$('#email').css('border-color', 'red');
+		flag=0;
+	}
+	
+	else {
+		$('#email').css('border-color', '');
+	}
+	
+	
+	
+	
+	if ($('#pass').val() == '') {
+		$('#pass').css('border-color', 'red');
+		flag=0;
+	}
+	
+	else {
+		$('#pass').css('border-color', '');
+	}
+
+
+    return flag;
+  }
+  
+  
+  } 
+   
 
 
 </script>		
