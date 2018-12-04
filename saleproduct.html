@@ -61,10 +61,17 @@ body {background-color:	LightBlue;}
 </div>
 <script>
 
+	console.log(sessionStorage.getItem("userid"));
+
    var productarray=getstored();
    var ulid="1"
 
+    var ii=0; 
 	var cart=[];
+	
+	if(getstoredcart().length!=0)
+	cart=getstoredcart();
+	
 	var cartiterator=0;
 	
 	function start()
@@ -130,6 +137,11 @@ body {background-color:	LightBlue;}
     button.addEventListener('click', function()
     {
     
+    if(!(sessionStorage.getItem("userid")))
+    {
+    window.location.href="userloginpage.html";
+    return false;
+    }
     add1(productid);
     
     });
@@ -147,7 +159,7 @@ body {background-color:	LightBlue;}
 	 
 	}
 
-  function storedata()
+    function storedata()
 	{
 	
 	//console.log("hi");
@@ -158,20 +170,53 @@ body {background-color:	LightBlue;}
     function add1(productid)
 	{
 	
-	for(var j=0;j<productarray.length;j++)
-	{
-	
-	if(productarray[j].roll==productid)
-	{
-	
-	cart.push(productarray[j]);
-	var x="drop" + productid;
-	console.log(document.getElementById(x).value);
-	cart[cart.length -1].quantity=document.getElementById(x).value;
-	storedata();
-	}
-	
-	}
+		for(var j=0;j<productarray.length;j++)
+		{
+		
+		if(productarray[j].roll==productid)
+		{
+		 
+		 //x is for dropdown menu where quantity is mentioned
+		  var x="drop" + productid;
+		 
+			for(var i=0;i<cart.length;i++)
+			{
+				//check if cart of that user is in cart array or not
+				if(cart[i][0].userid==sessionStorage.getItem("userid"))
+				{
+				 for(var jj=0;jj<cart[i].length;jj++)
+				 {
+				 
+					 //product is alraedy in cart of that user we just have to increase the quantity
+					 if(cart[i][jj].roll==productid)
+					 {
+					 cart[i][jj].quantity= Number(document.getElementById(x).value) +Number(cart[i][jj].quantity);
+					 storedata();
+					 return;
+					 }  
+				  }
+				  //if that product does not exist in cart of that user than addd that product in cart of that user
+					  cart[i].push(productarray[j]); 
+					  cart[i][cart[i].length -1].quantity=document.getElementById(x).value;
+					  cart[i][cart[i].length -1].userid=sessionStorage.getItem("userid");
+					  storedata();
+					 return;
+				}
+			
+			}
+			
+			//create new cart for user and store the cart on local storage
+			var userarray=[];
+			userarray.push(productarray[j]);
+			userarray[userarray.length -1].quantity=document.getElementById(x).value;
+			userarray[userarray.length -1].userid=sessionStorage.getItem("userid");
+			cart.push(userarray);
+			storedata();
+			
+			
+			}
+		
+		}
 	
 	}
 
@@ -184,6 +229,18 @@ body {background-color:	LightBlue;}
      }
      
      return(JSON.parse(localStorage.data));
+     }
+     
+     
+      function getstoredcart()
+     {
+     
+     if(!localStorage.cart)
+     {
+     localStorage.cart=JSON.stringify([]);
+     }
+     
+     return(JSON.parse(localStorage.cart));
      }
      
      
