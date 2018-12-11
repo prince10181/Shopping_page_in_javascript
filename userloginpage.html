@@ -153,6 +153,9 @@ input[type=text],input[type=password] {
 	   		/*console.log("password matched");*/
 	   		passflag=1;
 	   		sessionstore("userid",$("#signinuser").val())
+	   		if($("#signinname").val()=='admin')
+	   		window.location='adminorderpage.html';
+	   		else
 	   		window.location='saleproduct.html';
 	   		}
 	   	}
@@ -253,12 +256,14 @@ input[type=text],input[type=password] {
 	
 	account.push(object);	
 	storedata();
-	
+	window.location.href="userloginpage.html";
+	alert("signup successfull");
 	
 	});
 	
-		console.log("hlooo");
-   
+		
+		
+		
    
    }
    

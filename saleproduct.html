@@ -1,6 +1,7 @@
 <html>
 <head>
 <title> MY shopping page </title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <style>
 #h1tag
 {
@@ -59,11 +60,42 @@ body {background-color:	LightBlue;}
 
 
 </div>
+
+<div id='cartdiv'>
+
+<ul id='disul1'>
+</ul>
+
+<ul id="disul2">
+
+</ul>
+
+<ul id="disul3">
+
+</ul>
+
+
+</div>
 <script>
 
 	console.log(sessionStorage.getItem("userid"));
+	//console.log(document.getElementById('disul1'));
+	       
 
    var productarray=getstored();
+   
+   var adminarray=getstoredadminarray();
+   
+   function getstoredadminarray()
+     {
+     
+     if(!localStorage.adminarray)
+     {
+     localStorage.adminarray=JSON.stringify([]);
+     }
+     
+     return(JSON.parse(localStorage.adminarray));
+     }
    var ulid="1"
 
     var ii=0; 
@@ -73,6 +105,100 @@ body {background-color:	LightBlue;}
 	cart=getstoredcart();
 	
 	var cartiterator=0;
+	
+	function rmchilds(myNode)
+	{
+	//console.log(myNode);
+	while (myNode.firstChild) {
+    myNode.removeChild(myNode.firstChild);
+}
+	}
+	
+	function displaycart(index)
+	{
+	
+	rmchilds(document.getElementById("disul1"));
+	rmchilds(document.getElementById("disul2"));
+	rmchilds(document.getElementById("disul3"));
+	//rmchilds($("#disul1"));
+	
+	
+	if($("#cartheading").length==0)
+	$("<h2 id='cartheading' >Your cart<h2>").insertAfter($("#divdisplay"));
+	
+	displayproducts("NAME",document.getElementById("disul1"),0,0,0);
+	displayproducts("PRICE",document.getElementById("disul2"),0,0,0);
+	displayproducts("QUANTITY",document.getElementById("disul3"),0,0,0);
+  
+	
+	
+	
+	for(var j=0;j<cart[index].length;j++)
+	{
+	
+	displayproducts(cart[index][j].name,document.getElementById("disul1"),0,0,0);
+	
+	displayproducts(cart[index][j].price,document.getElementById("disul2"),0,0,0);
+	
+	displayproducts(cart[index][j].quantity,document.getElementById("disul3"),0,0,0);
+	
+	/* var label1=$("<label id='pricelabel'></label>").text(cart[index][j].price + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' );
+	$("#cartdiv").append(label1);
+	
+	 var label1=$("<label id='quantitylabel'></label>").text(cart[index][j].quantity + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' );
+	$("#cartdiv").append(label1);
+	
+	$("#cartdiv").append("<br></br>");*/
+	
+	}
+	
+    if($("#buybutton").length==0)
+	$("<button id='buybutton' >Buy<buttoon>").insertAfter($("#cartdiv"));
+	
+	$("#buybutton").click(function(){
+	
+    $("#divdisplay").hide();
+    
+    $("<div id='ad'></div").insertAfter($("#buybutton"));
+    
+    $("#ad").append("<h4 id='adlab'>Enter Deleivery Address</h4>");
+    
+    $("#ad").append("<textarea id='adtext' rows='4' cols='20'>");
+    
+    $("#ad").append("<br></br");
+    
+    $("<button id='cash' >confirm</button>").insertAfter($("#ad"));
+    
+   $("#cash").click(function()
+   {
+   
+   if( (!$("adtext").val()) && ($("#emptyad").length!=0) )
+   {
+   
+    $("<label id='emptyad'><font color='red'>empty adress</font></label>").insertAfter($("#adtext"));
+    return;
+   }
+   
+   $("#emptyad").remove();
+   
+   var object=
+   {
+   usercart:cart[index],
+   useradress:$("#adtext").val()
+   }
+   
+   adminarray.push(object);
+   localStorage.adminarray=JSON.stringify(adminarray);
+   window.location="saleproduct.html";f5
+   alert("order placed successfully");
+	
+   
+   });
+    
+    
+   });
+	
+	}
 	
 	function start()
 	{
@@ -90,6 +216,18 @@ body {background-color:	LightBlue;}
 	for(var j=0;j<productarray.length;j++)
 	displayproducts("Add to cart",document.getElementById("ul4"),0,1,productarray[j].roll);
 	
+	
+	
+	     var abc=getstoredcart();
+	       
+	        for(var i=0;i<abc.length;i++)
+			{
+				//check if cart of that user is in cart array or not
+				if(abc[i][0].userid==sessionStorage.getItem("userid"))
+				{
+				displaycart(i);
+				}
+		  }
 	
 	}
 	function displayproducts(a,b,dropdown,button,productid)
@@ -142,6 +280,7 @@ body {background-color:	LightBlue;}
     window.location.href="userloginpage.html";
     return false;
     }
+    
     add1(productid);
     
     });
@@ -192,6 +331,7 @@ body {background-color:	LightBlue;}
 					 {
 					 cart[i][jj].quantity= Number(document.getElementById(x).value) +Number(cart[i][jj].quantity);
 					 storedata();
+					 displaycart(i);
 					 return;
 					 }  
 				  }
@@ -200,6 +340,7 @@ body {background-color:	LightBlue;}
 					  cart[i][cart[i].length -1].quantity=document.getElementById(x).value;
 					  cart[i][cart[i].length -1].userid=sessionStorage.getItem("userid");
 					  storedata();
+					  displaycart(i);
 					 return;
 				}
 			
@@ -211,6 +352,7 @@ body {background-color:	LightBlue;}
 			userarray[userarray.length -1].quantity=document.getElementById(x).value;
 			userarray[userarray.length -1].userid=sessionStorage.getItem("userid");
 			cart.push(userarray);
+			displaycart(cart.length-1);
 			storedata();
 			
 			
