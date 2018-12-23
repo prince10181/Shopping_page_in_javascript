@@ -10,12 +10,12 @@
 
 ul{
 display:inline-block;
-list-style-type: none; 
+list-style-type: none;
 }
 
 span:before{
-    content:" "; 
-    display:inline-block; 
+    content:" ";
+    display:inline-block;
     width:40px;
 }
 button
@@ -27,7 +27,7 @@ button
   border-radius: 5px;
 }
 body {background-color:	LightBlue;}
- 
+
 </style>
 </head>
 <body onload="start()" >
@@ -76,49 +76,82 @@ body {background-color:	LightBlue;}
 
 
 </div>
+
+</div>
+
+<div id='orderdiv'>
+
+<ul id='orderul1'>
+</ul>
+
+<ul id="orderul2">
+
+
+</ul>
+
+
+</div>
 <script>
 
 	console.log(sessionStorage.getItem("userid"));
 	//console.log(document.getElementById('disul1'));
-	       
+
+
+	var orderid=0;
+
+	if(getstoredorderid())
+	orderid=getstoredorderid();
+
+	//console.log(typeof userid);
 
    var productarray=getstored();
-   
+
    var adminarray=getstoredadminarray();
-   
+
+   function getstoredorderid()
+     {
+
+     if(!localStorage.orderid)
+     {
+     localStorage.orderid=JSON.stringify([]);
+     }
+
+     return(JSON.parse(localStorage.orderid));
+     }
+
    function getstoredadminarray()
      {
-     
+
      if(!localStorage.adminarray)
      {
      localStorage.adminarray=JSON.stringify([]);
      }
-     
+
      return(JSON.parse(localStorage.adminarray));
      }
-     
-     
-       
+
+
+
    function getstoreddata()
      {
-     
+
      if(!localStorage.data)
      {
      localStorage.data=JSON.stringify([]);
      }
-     
+
      return(JSON.parse(localStorage.data));
      }
    var ulid="1"
 
-    var ii=0; 
+    var ii=0;
 	var cart=[];
-	
+
 	if(getstoredcart().length!=0)
 	cart=getstoredcart();
-	
+
 	var cartiterator=0;
-	
+
 	function rmchilds(myNode)
 	{
 	//console.log(myNode);
@@ -126,155 +159,157 @@ body {background-color:	LightBlue;}
     myNode.removeChild(myNode.firstChild);
 }
 	}
-	
+
 	function displaycart(index)
 	{
-	
+
 	rmchilds(document.getElementById("disul1"));
 	rmchilds(document.getElementById("disul2"));
 	rmchilds(document.getElementById("disul3"));
 	//rmchilds($("#disul1"));
-	
-	
+
+
 	if($("#cartheading").length==0)
 	$("<h2 id='cartheading' >Your cart<h2>").insertAfter($("#divdisplay"));
-	
+
 	displayproducts("NAME",document.getElementById("disul1"),0,0,0);
 	displayproducts("PRICE",document.getElementById("disul2"),0,0,0);
 	displayproducts("QUANTITY",document.getElementById("disul3"),0,0,0);
-  
-	
-	
-	
+
+
+
+
 	for(var j=0;j<cart[index].length;j++)
 	{
-	
+
 	displayproducts(cart[index][j].name,document.getElementById("disul1"),0,0,0);
-	
+
 	displayproducts(cart[index][j].price,document.getElementById("disul2"),0,0,0);
-	
+
 	displayproducts(cart[index][j].quantity,document.getElementById("disul3"),0,0,0);
-	
+
 	/* var label1=$("<label id='pricelabel'></label>").text(cart[index][j].price + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' );
 	$("#cartdiv").append(label1);
-	
+
 	 var label1=$("<label id='quantitylabel'></label>").text(cart[index][j].quantity + '\xa0\xa0\xa0\xa0\xa0\xa0\xa0' );
 	$("#cartdiv").append(label1);
-	
+
 	$("#cartdiv").append("<br></br>");*/
-	
+
 	}
-	
+
     if($("#buybutton").length==0)
 	$("<button id='buybutton' >Buy<buttoon>").insertAfter($("#cartdiv"));
-	
+
 	$("#buybutton").click(function(){
-	
+
     $("#divdisplay").hide();
-    
-    
+
+
     if($("#ad").length==0)
     {
-    
+
     $("<div id='ad'></div").insertAfter($("#buybutton"));
-    
+
     $("#ad").append("<h4 id='adlab'>Enter Deleivery Address</h4>");
-    
+
     $("#ad").append("<textarea id='adtext' rows='4' cols='20'>");
-    
+
     $("#ad").append("<br></br");
-    
+
     $("<button id='cash' >confirm</button>").insertAfter($("#ad"));
-    
+
    $("#cash").click(function()
    {
-   
+
    if(!$("#adtext").val())
-   {  
+   {
    console.log("here");
-   
+
    	if(($("#emptyad").length==0))
     $("<label id='emptyad'><font color='red'>empty adress</font></label>").insertAfter($("#adtext"));
     return;
    }
-   
+
    $("#emptyad").remove();
-   
-   
+
+
    var object=
    {
+   orderid:orderid++,
    usercart:cart[index],
    useradress:$("#adtext").val()
    }
-   
+
+   localStorage.orderid=JSON.stringify(orderid);
    adminarray.push(object);
    localStorage.adminarray=JSON.stringify(adminarray);
    updatebackend(index);
-  window.location="saleproduct.html";
-  alert("order placed successfully");
-	
-   
+   window.location="saleproduct.html";
+   alert("order placed successfully");
+
+
    });
-    
+
     }
-    
+
    });
-   
-	
+
+
 	}
-	
-	
+
+
 	function updatebackend(index)
 	{
-	
+
 	var data=getstoreddata();
 	console.log(data.length);
 	for(var i=0;i<cart[index].length;i++)
 	{
-		for(var j=0;j<data.length;j++)		
+		for(var j=0;j<data.length;j++)
 		{
-		
+
 		console.log(data[j].roll + data[j].name);
 		if(data[j].roll==cart[index][i].roll)
 		{
 		console.log("here in");
 		data[j].quantity-=cart[index][i].quantity;
-		
+
 		if(data[j].quantity==0)
 		data.splice(j,1);
-		
+
 		 localStorage.data=JSON.stringify(data);
-		
+
 		}
-		
+
 		}
-		
+
 	}
 	cart.splice(index,1);
 	 localStorage.cart=JSON.stringify(cart);
-	 
+
 	}
 	function start()
 	{
-	
+
 
 	for(var j=0;j<productarray.length;j++)
 	displayproducts(productarray[j].name,document.getElementById("ul1"),0,0,productarray[j].roll);
-	
+
 	for(var j=0;j<productarray.length;j++)
 	displayproducts(productarray[j].price,document.getElementById("ul2"),0,0,productarray[j].roll);
-	
+
 	for(var j=0;j<productarray.length;j++)
 	displayproducts(productarray[j].quantity,document.getElementById("ul3"),1,0,productarray[j].roll);
-	
+
 	for(var j=0;j<productarray.length;j++)
 	displayproducts("Add to cart",document.getElementById("ul4"),0,1,productarray[j].roll);
-	
-	
-	
+
+
+
 	     var abc=getstoredcart();
-	       
-	        for(var i=0;i<abc.length;i++)
+
+	    for(var i=0;i<abc.length;i++)
 			{
 				//check if cart of that user is in cart array or not
 				if(abc[i][0].userid==sessionStorage.getItem("userid"))
@@ -282,13 +317,56 @@ body {background-color:	LightBlue;}
 				displaycart(i);
 				}
 		  }
-	
+  //display previous order of the user
+	displaypreviousorders();
 	}
+
+  function displaypreviousorders()
+  {
+
+
+    rmchilds(document.getElementById("orderul1"));
+    rmchilds(document.getElementById("orderul2"));
+
+
+
+    if($("#orderheading").length==0)
+    {
+     if($('#cartheading').length==0)
+     $("<h2 id='orderheading' >Your orders<h2>").insertAfter($("#cartdiv"));
+     else {
+        $("<h2 id='orderheading' >Your orders<h2>").insertAfter($("#buybutton"));
+     }
+    }
+
+    displayproducts("Order-Id",document.getElementById("orderul1"),0,0,0);
+    displayproducts("Order-status",document.getElementById("orderul2"),0,0,0);
+
+
+
+  //  console.log(adminarray);
+
+    for(var j=0;j<adminarray.length;j++)
+    {
+
+      //console.log(adminarray.usercart);
+      if(adminarray[j].usercart[0].userid=sessionStorage.getItem("userid"))
+      {
+          displayproducts(adminarray[j].orderid,document.getElementById("orderul1"),0,0,0);
+
+          displayproducts("pending",document.getElementById("orderul2"),0,0,0);
+     }
+
+  }
+
+
+  }
+
 	function displayproducts(a,b,dropdown,button,productid)
 	{
 	 if(dropdown!=0)
 	 {
-	  
+
 	 var li=document.createElement("li");
 	 var dropmenu=document.createElement("select");
 	 var dropid="drop" + productid;
@@ -296,51 +374,51 @@ body {background-color:	LightBlue;}
 	 dropmenu.setAttribute("style","width:50px;");
 	 dropmenu.textContent="quantity";
 	 dropmenu.setAttribute("size","1");
-	  
+
 		 for(var j=1;j<=a;j++)
 		 {
 		 var option=document.createElement("option");
 		 option.textContent=j;
 		 dropmenu.appendChild(option);
 		 }
-		 
+
 	 li.appendChild(dropmenu);
 	 b.appendChild(li);
 	 var br=document.createElement("br");
 	 b.appendChild(br);
-	 
+
 	 }
-	
+
 	else if(button==1)
 	{
 	var li=document.createElement("li");
-	
+
 	var button=document.createElement("button");
-	
+
 	//console.log(buttonid);
 	button.setAttribute("id",productid);
 	button.textContent=a;
-	
+
 	li.appendChild(button);
 	b.appendChild(li);
 	var br=document.createElement("br");
 	b.appendChild(br);
-	
+
     button.addEventListener('click', function()
     {
-    
+
     if(!(sessionStorage.getItem("userid")))
     {
     window.location.href="userloginpage.html";
     return false;
     }
-    
+
     add1(productid);
-    
+
     });
-    
+
 	}
-			 
+
 	 else
 	 {
 	 var li=document.createElement("li");
@@ -349,29 +427,29 @@ body {background-color:	LightBlue;}
 	 var br=document.createElement("br");
 	 b.appendChild(br);
 	 }
-	 
+
 	}
 
     function storedata()
 	{
-	
+
 	//console.log("hi");
 	localStorage.cart=JSON.stringify(cart);
-	
+
 	}
 
     function add1(productid)
 	{
-	
+
 		for(var j=0;j<productarray.length;j++)
 		{
-		
+
 		if(productarray[j].roll==productid)
 		{
-		 
+
 		 //x is for dropdown menu where quantity is mentioned
 		  var x="drop" + productid;
-		 
+
 			for(var i=0;i<cart.length;i++)
 			{
 				//check if cart of that user is in cart array or not
@@ -379,35 +457,35 @@ body {background-color:	LightBlue;}
 				{
 				 for(var jj=0;jj<cart[i].length;jj++)
 				 {
-				 
+
 					 //product is alraedy in cart of that user we just have to increase the quantity
 					 if(cart[i][jj].roll==productid)
 					 {
 					 console.log("maximum quantity available is "+productarray[j].quantity);
 					 var x= Number(document.getElementById(x).value) +Number(cart[i][jj].quantity);
-					 
+
 					 if(x<=productarray[j].quantity)
 					 cart[i][jj].quantity=x;
-					 
+
 					 else
 					 alert("maximum available of this item quantity is "+ productarray[j].quantity);
-					 
+
 					 storedata();
 					 displaycart(i);
 					 return;
-					 }  
+					 }
 				  }
 				  //if that product does not exist in cart of that user than addd that product in cart of that user
-					  cart[i].push(productarray[j]); 
+					  cart[i].push(productarray[j]);
 					  cart[i][cart[i].length -1].quantity=document.getElementById(x).value;
 					  cart[i][cart[i].length -1].userid=sessionStorage.getItem("userid");
 					  storedata();
 					  displaycart(i);
 					 return;
 				}
-			
+
 			}
-			
+
 			//create new cart for user and store the cart on local storage
 			var userarray=[];
 			userarray.push(productarray[j]);
@@ -416,46 +494,37 @@ body {background-color:	LightBlue;}
 			cart.push(userarray);
 			displaycart(cart.length-1);
 			storedata();
-			
-			
+
+
 			}
-		
+
 		}
-	
+
 	}
 
  function getstored()
      {
-     
+
      if(!localStorage.data)
      {
      localStorage.data=JSON.stringify([]);
      }
-     
+
      return(JSON.parse(localStorage.data));
      }
-     
-     
+
+
       function getstoredcart()
      {
-     
+
      if(!localStorage.cart)
      {
      localStorage.cart=JSON.stringify([]);
      }
-     
+
      return(JSON.parse(localStorage.cart));
      }
-     
-     
-     
+
 </script>
-
-
-
-
-
-
-
 </body>
 </html>

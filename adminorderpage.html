@@ -32,6 +32,7 @@ body {background-color:	LightBlue;}
 
 			<body onload="start()">
 			<div id="ptable">
+			
 			<ul id="ul1">
 			<span></span>
 			<li><h3> User-id </li>
@@ -45,9 +46,22 @@ body {background-color:	LightBlue;}
 			</ul>
 
 			<ul id="ul3">
+			<li><h3> order-id</li>
+			<span></span>
+			</ul>
+		
+			
+			<ul id="ul4">
 			<li><h3> click to view order details</li>
 			<span></span>
 			</ul>
+			
+			
+			<ul id="ul5">
+			<li><h3>change order status</li>
+			<span></span>
+			</ul>
+			
 			</div>
 			
 			
@@ -98,17 +112,20 @@ body {background-color:	LightBlue;}
 				
 				for(var i=0;i<adminarray.length;i++)
 				{
-				displayproducts(adminarray[i].usercart[0].userid,document.getElementById("ul1"),0,0,i);
-				displayproducts(adminarray[i].useradress,document.getElementById("ul2"),0,0,i);
-				displayproducts("view details",document.getElementById("ul3"),1,adminarray[i].usercart[0].userid,i);
+				displayproducts(adminarray[i].usercart[0].userid,document.getElementById("ul1"),0,0,i,0,adminarray[i].orderid);
+				displayproducts(adminarray[i].useradress,document.getElementById("ul2"),0,0,i,0,adminarray[i].orderid);
+				displayproducts(adminarray[i].orderid,document.getElementById("ul3"),0,0,i,0,adminarray[i].orderid);
+				displayproducts("view details",document.getElementById("ul4"),1,adminarray[i].usercart[0].userid,i,0,adminarray[i].orderid);
+				displayproducts(["pending","shipped","successfull"],document.getElementById("ul5"),0,0,i,1,adminarray[i].orderid);
 				}
 				
 				
 				
 				
+				
 				}
 				
-	function displayproducts(a,b,button,productid,userindex)
+	function displayproducts(a,b,button,productid,userindex,dropdown,orderid)
 	{
 	 
 	
@@ -134,15 +151,15 @@ body {background-color:	LightBlue;}
 	rmchilds(document.getElementById("sul2"));
 	rmchilds(document.getElementById("sul3"));
 	
-	displayproducts("NAME",document.getElementById("sul1"),0,0,userindex);
-	displayproducts("PRICE",document.getElementById("sul2"),0,0,userindex);
-	displayproducts("QUANTITY",document.getElementById("sul3"),0,0,userindex);
+	displayproducts("NAME",document.getElementById("sul1"),0,0,userindex,0,orderid);
+	displayproducts("PRICE",document.getElementById("sul2"),0,0,userindex,0,orderid);
+	displayproducts("QUANTITY",document.getElementById("sul3"),0,0,userindex,0,orderid);
 	
 	for(var i=0;i<adminarray[userindex].usercart.length;i++)
 	{
-	displayproducts(adminarray[userindex].usercart[i].name,document.getElementById("sul1"),0,0,userindex);
-	displayproducts(adminarray[userindex].usercart[i].price,document.getElementById("sul2"),0,0,userindex);
-	displayproducts(adminarray[userindex].usercart[i].quantity,document.getElementById("sul3"),0,0,userindex);
+	displayproducts(adminarray[userindex].usercart[i].name,document.getElementById("sul1"),0,0,userindex,0,orderid);
+	displayproducts(adminarray[userindex].usercart[i].price,document.getElementById("sul2"),0,0,userindex,0,orderid);
+	displayproducts(adminarray[userindex].usercart[i].quantity,document.getElementById("sul3"),0,0,userindex,0,orderid);
 	
 	
 	}
@@ -152,14 +169,41 @@ body {background-color:	LightBlue;}
     });
     
 	}
+	
+	else if(dropdown!=0)
+	 {
+	  
+	 var li=document.createElement("li");
+	 var dropmenu=document.createElement("select");
+	 var dropid="drop" + orderid;
+	 dropmenu.setAttribute("id",dropid);
+	 dropmenu.setAttribute("style","width:80px;");
+	 dropmenu.textContent="quantity";
+	 dropmenu.setAttribute("size","1");
+	  
+		 for(var j=0;j<a.length;j++)
+		 {
+		 var option=document.createElement("option");
+		 option.textContent=a[j];
+		 dropmenu.appendChild(option);
+		 }
+		 
+	 li.appendChild(dropmenu);
+	 b.appendChild(li);
+	 var br=document.createElement("br");
+	 b.appendChild(br);
+	 
+	 }
 			 
 	 else
 	 {
+	 
 	 var li=document.createElement("li");
 	 li.textContent=a;
 	 b.appendChild(li);
 	 var br=document.createElement("br");
 	 b.appendChild(br);
+	 
 	 }
 	 
 	}
