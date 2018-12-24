@@ -9,204 +9,235 @@
 
 ul{
 display:inline-block;
-list-style-type: none; 
+list-style-type: none;
 }
 
 span:before{
-    content:" "; 
-    display:inline-block; 
+    content:" ";
+    display:inline-block;
     width:40px;
 }
+
+h3
+{
+  color:red;
+}
+
 button
 {
 
     height:18px;
     width:90px;
-    border: 2px solid brown;
-  border-radius: 5px;
+    border: 2px solid orange;
+
 }
-body {background-color:	LightBlue;}
- 
+body {background-color:	yellow;}
+
 </style>
 	</head>
 
 			<body onload="start()">
 			<div id="ptable">
-			
+
 			<ul id="ul1">
 			<span></span>
-			<li><h3> User-id </li>
+			<li><h3 style = 'font-family:georgia,garamond,serif;font-style:oblique;'> User-id </li>
 			<span></span>
 			</ul>
 
-			
+
 			<ul id="ul2">
-			<li><h3> Address </li>
+			<li><h3 style = 'font-family:georgia,garamond,serif;font-style:oblique;font-color:orange;'> Address </li>
 			<span></span>
 			</ul>
 
 			<ul id="ul3">
-			<li><h3> order-id</li>
+			<li><h3 style = 'font-family:georgia,garamond,serif;font-style:oblique;'> order-id</li>
 			<span></span>
-			</ul>
-		
-			
-			<ul id="ul4">
-			<li><h3> click to view order details</li>
-			<span></span>
-			</ul>
-			
-			
-			<ul id="ul5">
-			<li><h3>change order status</li>
-			<span></span>
-			</ul>
-			
-			</div>
-			
-			
-			<div id="stable">
-			<ul id="sul1">	
 			</ul>
 
-			
+
+			<ul id="ul4">
+			<li><h3 style = 'font-family:georgia,garamond,serif;font-style:oblique;'> click to view order details</li>
+			<span></span>
+			</ul>
+
+
+			<ul id="ul5">
+			<li><h3 style = 'font-family:georgia,garamond,serif;font-style:oblique;'>change order status</li>
+			<span></span>
+			</ul>
+
+			</div>
+
+
+			<div id="stable">
+			<ul id="sul1">
+			</ul>
+
+
 			<ul id="sul2">
 			</ul>
 
 			<ul id="sul3">
 			</ul>
 			</div>
-			
+
 			</body>
-			
+
 				<script>
-				
-				
-				
-			var adminaraay=[];
-				
-	function getstoredadminarray()
-     {
-     
-     if(!localStorage.adminarray)
-     {
-     localStorage.adminarray=JSON.stringify([]);
-     }
-     
-     return(JSON.parse(localStorage.adminarray));
-     }
-     
-     function rmchilds(myNode)
-	{
-	//console.log(myNode);
-	while (myNode.firstChild) {
-    myNode.removeChild(myNode.firstChild);
-    }
-	}
-			
+
+
+
+		    var adminaraay=[];
+
+			  function getstoredadminarray()
+		     {
+
+		     if(!localStorage.adminarray)
+		     {
+		     localStorage.adminarray=JSON.stringify([]);
+		     }
+
+		     return(JSON.parse(localStorage.adminarray));
+		     }
+
+			  function rmchilds(myNode)
+				{
+				//console.log(myNode);
+				while (myNode.firstChild) {
+			    myNode.removeChild(myNode.firstChild);
+			    }
+				}
+
 				function start()
 				{
-				
+
 				adminarray=getstoredadminarray();
 				//console.log(adminarray[0].usercart[0].userid);
-				
+
 				for(var i=0;i<adminarray.length;i++)
 				{
+
 				displayproducts(adminarray[i].usercart[0].userid,document.getElementById("ul1"),0,0,i,0,adminarray[i].orderid);
 				displayproducts(adminarray[i].useradress,document.getElementById("ul2"),0,0,i,0,adminarray[i].orderid);
 				displayproducts(adminarray[i].orderid,document.getElementById("ul3"),0,0,i,0,adminarray[i].orderid);
 				displayproducts("view details",document.getElementById("ul4"),1,adminarray[i].usercart[0].userid,i,0,adminarray[i].orderid);
 				displayproducts(["pending","shipped","successfull"],document.getElementById("ul5"),0,0,i,1,adminarray[i].orderid);
 				}
-				
-				
-				
-				
-				
-				}
-				
-	function displayproducts(a,b,button,productid,userindex,dropdown,orderid)
-	{
-	 
-	
-	if(button==1)
-	{
-	var li=document.createElement("li");
-	
-	var button=document.createElement("button");
-	
-	//console.log(buttonid);
-	button.setAttribute("id",productid);
-	button.textContent=a;
-	
-	li.appendChild(button);
-	b.appendChild(li);
-	var br=document.createElement("br");
-	b.appendChild(br);
-	
-    button.addEventListener('click', function()
-    {
-    
-    rmchilds(document.getElementById("sul1"));
-	rmchilds(document.getElementById("sul2"));
-	rmchilds(document.getElementById("sul3"));
-	
-	displayproducts("NAME",document.getElementById("sul1"),0,0,userindex,0,orderid);
-	displayproducts("PRICE",document.getElementById("sul2"),0,0,userindex,0,orderid);
-	displayproducts("QUANTITY",document.getElementById("sul3"),0,0,userindex,0,orderid);
-	
-	for(var i=0;i<adminarray[userindex].usercart.length;i++)
-	{
-	displayproducts(adminarray[userindex].usercart[i].name,document.getElementById("sul1"),0,0,userindex,0,orderid);
-	displayproducts(adminarray[userindex].usercart[i].price,document.getElementById("sul2"),0,0,userindex,0,orderid);
-	displayproducts(adminarray[userindex].usercart[i].quantity,document.getElementById("sul3"),0,0,userindex,0,orderid);
-	
-	
-	}
-	
-	
-    
-    });
-    
-	}
-	
-	else if(dropdown!=0)
-	 {
-	  
-	 var li=document.createElement("li");
-	 var dropmenu=document.createElement("select");
-	 var dropid="drop" + orderid;
-	 dropmenu.setAttribute("id",dropid);
-	 dropmenu.setAttribute("style","width:80px;");
-	 dropmenu.textContent="quantity";
-	 dropmenu.setAttribute("size","1");
-	  
-		 for(var j=0;j<a.length;j++)
-		 {
-		 var option=document.createElement("option");
-		 option.textContent=a[j];
-		 dropmenu.appendChild(option);
-		 }
-		 
-	 li.appendChild(dropmenu);
-	 b.appendChild(li);
-	 var br=document.createElement("br");
-	 b.appendChild(br);
-	 
-	 }
-			 
-	 else
-	 {
-	 
-	 var li=document.createElement("li");
-	 li.textContent=a;
-	 b.appendChild(li);
-	 var br=document.createElement("br");
-	 b.appendChild(br);
-	 
-	 }
-	 
-	}
-				</script>
 
-</html>
+				}
+
+				function displayproducts(a,b,button,productid,userindex,dropdown,orderid)
+				{
+
+
+				if(button==1)
+				{
+				var li=document.createElement("li");
+
+				var button=document.createElement("button");
+
+				//console.log(buttonid);
+				button.setAttribute("id",productid);
+				button.textContent=a;
+
+				li.appendChild(button);
+				b.appendChild(li);
+				var br=document.createElement("br");
+				b.appendChild(br);
+
+			    button.addEventListener('click', function()
+			    {
+
+			  rmchilds(document.getElementById("sul1"));
+				rmchilds(document.getElementById("sul2"));
+				rmchilds(document.getElementById("sul3"));
+
+				displayproducts("PRODUCT-NAME",document.getElementById("sul1"),0,0,userindex,0,orderid);
+				displayproducts("PRICE",document.getElementById("sul2"),0,0,userindex,0,orderid);
+				displayproducts("QUANTITY",document.getElementById("sul3"),0,0,userindex,0,orderid);
+
+				for(var i=0;i<adminarray[userindex].usercart.length;i++)
+				{
+				displayproducts(adminarray[userindex].usercart[i].name,document.getElementById("sul1"),0,0,userindex,0,orderid);
+				displayproducts(adminarray[userindex].usercart[i].price,document.getElementById("sul2"),0,0,userindex,0,orderid);
+				displayproducts(adminarray[userindex].usercart[i].quantity,document.getElementById("sul3"),0,0,userindex,0,orderid);
+
+
+				}
+
+
+
+			    });
+
+				}
+
+				else if(dropdown!=0)
+				 {
+
+				 var li=document.createElement("li");
+				 var dropmenu=document.createElement("select");
+				 var dropid="drop" + orderid;
+				 dropmenu.setAttribute("id",dropid);
+				 dropmenu.setAttribute("style","width:80px;");
+				 dropmenu.textContent="quantity";
+				 dropmenu.setAttribute("size","1");
+
+				 var flag=0;
+					 for(var j=0;j<a.length;j++)
+					 {
+						 if(adminarray[userindex].orderstatus==a[j])
+						  flag=1;
+								if(flag==1)
+								{
+						 var option=document.createElement("option");
+						 option.textContent=a[j];
+						 dropmenu.appendChild(option);
+					     }
+					 }
+
+				 li.appendChild(dropmenu);
+				 b.appendChild(li);
+				 var br=document.createElement("br");
+				 b.appendChild(br);
+
+				 //console.log("hi"+ document.getElementById(dropid));
+
+				 dropmenu.addEventListener('change',function(){
+					 adminarray=getstoredadminarray();
+					 for(var j=0;j<adminarray.length;j++)
+					 {
+						 if(adminarray[j].orderid==orderid)
+						 {
+
+							 //console.log($('#dropid'));
+							 //doubt it is not working with thew help of jquery
+							 var e=(document.getElementById(dropid));
+							 var strUser = e.options[e.selectedIndex].value;
+							 adminarray[j].orderstatus=strUser;
+
+						 }
+					 }
+
+					 	localStorage.adminarray=JSON.stringify(adminarray);
+
+				 });
+
+				 }
+
+				 else
+				 {
+
+				 var li=document.createElement("li");
+				 li.textContent=a;
+				 b.appendChild(li);
+				 var br=document.createElement("br");
+				 b.appendChild(br);
+
+				 }
+
+				}
+							</script>
+
+			</html>

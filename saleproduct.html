@@ -8,6 +8,11 @@
  text-align: center
 }
 
+h2
+{
+  font-family:georgia,garamond,serif
+  font-style:italic;'
+}
 ul{
 display:inline-block;
 list-style-type: none;
@@ -23,7 +28,7 @@ button
 
     height:18px;
     width:90px;
-    border: 2px solid brown;
+    border: 2px solid grey;
   border-radius: 5px;
 }
 body {background-color:	LightBlue;}
@@ -39,22 +44,22 @@ body {background-color:	LightBlue;}
 
 <ul id="ul1">
 <span></span>
-<li><h3> Product-name </li>
+<li><h2> Product-name </li>
 <span></span>
 </ul>
 
 <ul id="ul2">
-<li><h3> Price </li>
+<li><h2> Price </li>
 <span></span>
 </ul>
 
 <ul id="ul3">
-<li><h3> Quantity </li>
+<li><h2> Quantity </li>
 <span></span>
 </ul>
 
 <ul id="ul4">
-<li><h3> Add to cart </li>
+<li><h2> Add to cart </li>
 <span></span>
 </ul>
 
@@ -170,7 +175,7 @@ body {background-color:	LightBlue;}
 
 
 	if($("#cartheading").length==0)
-	$("<h2 id='cartheading' >Your cart<h2>").insertAfter($("#divdisplay"));
+	$("<h2 id='cartheading' style = 'font-family:georgia,garamond,serif;font-style:italic;' >Your cart<h2>").insertAfter($("#divdisplay"));
 
 	displayproducts("NAME",document.getElementById("disul1"),0,0,0);
 	displayproducts("PRICE",document.getElementById("disul2"),0,0,0);
@@ -236,6 +241,7 @@ body {background-color:	LightBlue;}
 
    var object=
    {
+   orderstatus:'pending',
    orderid:orderid++,
    usercart:cart[index],
    useradress:$("#adtext").val()
@@ -318,7 +324,21 @@ body {background-color:	LightBlue;}
 				}
 		  }
   //display previous order of the user
+  //check if this user has any previous orders or not
+  var haspreviousorders=0;
+  for(var j=0;j<adminarray.length;j++)
+  {
+
+    //console.log(adminarray.usercart);
+    if(adminarray[j].usercart[0].userid=sessionStorage.getItem("userid"))
+    {
+      haspreviousorders=1;
+      break;
+    }
+  }
+  if(haspreviousorders==1)
 	displaypreviousorders();
+
 	}
 
   function displaypreviousorders()
@@ -333,9 +353,9 @@ body {background-color:	LightBlue;}
     if($("#orderheading").length==0)
     {
      if($('#cartheading').length==0)
-     $("<h2 id='orderheading' >Your orders<h2>").insertAfter($("#cartdiv"));
+     $("<h2 id='orderheading' style = 'font-family:georgia,garamond,serif;font-style:italic;' >Your orders</h2>").insertAfter($("#cartdiv"));
      else {
-        $("<h2 id='orderheading' >Your orders<h2>").insertAfter($("#buybutton"));
+        $("<h2 id='orderheading' style = 'font-family:georgia,garamond,serif;font-style:italic;' >Your orders</h2>").insertAfter($("#buybutton"));
      }
     }
 
@@ -354,7 +374,9 @@ body {background-color:	LightBlue;}
       {
           displayproducts(adminarray[j].orderid,document.getElementById("orderul1"),0,0,0);
 
-          displayproducts("pending",document.getElementById("orderul2"),0,0,0);
+
+          displayproducts(adminarray[j].orderstatus,document.getElementById("orderul2"),0,0,0);
+
      }
 
   }
@@ -438,7 +460,7 @@ body {background-color:	LightBlue;}
 
 	}
 
-    function add1(productid)
+  function add1(productid)
 	{
 
 		for(var j=0;j<productarray.length;j++)
