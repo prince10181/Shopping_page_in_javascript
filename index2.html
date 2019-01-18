@@ -2,6 +2,23 @@
 
  <head>
   <style>
+#navul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navli {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
  body {background-color: orange;}
 
   #product {
@@ -16,10 +33,7 @@
     margin-left: -15em;
     background-color:powderblue;
 }
-#h1tag
-{
- text-align: center
-}
+
 textarea
 {
   border: 2px solid blue;
@@ -59,11 +73,18 @@ position:relative;
   border: 2px solid blue;
   border-radius: 5px;
 }
+a {
+  color:white;
+  text-decoration: none;
+}
 li
 {
-color:white;
+color:black;
 }
-
+body
+{
+  background-color:#c9cad6;
+}
   </style>
     <title>Product list</title>
     <meta charset="utf-8" />
@@ -72,11 +93,16 @@ color:white;
  <body>
 
 
+   <ul id="navul">
+     <li class="navli" onclick="createpanel(null,null,null,null,null,null,null)"><a>Add Product</a></li>
+     <li class="navli"><a href="adminorderpage.html">view orders</a></li>
 
-   <h1 id="h1tag" onclick="createpanel(null,null,null,null,null,null,null)" ><font color="yellow">Click Here To Add Product</font></h1>
+   </ul>
 
 
-	<h2><font color="yellow">Products list</font></h2>
+
+
+	<h2><font color="#6f2e2e">Product list</font></h2>
 	<div id="productpanel" >
 	</div>
 
@@ -116,7 +142,7 @@ color:white;
    var panel=document.createElement("div");
    panel.setAttribute("id","product");
 
-   panel.setAttribute("style", "background-color:yellow;");
+   panel.setAttribute("style", "background-color:'#ffe5ec';");
 
    var div1=document.createElement('div');
    var label1=document.createElement('span');
@@ -256,7 +282,7 @@ color:white;
    function updatescreen(editbuttonid)
    {
    var input1=document.getElementById("input1");
-	var input2=document.getElementById("input2");
+  	var input2=document.getElementById("input2");
 	var input3=document.getElementById("input3");
 	var input4=document.getElementById("input4");
 

@@ -16,7 +16,7 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    
+
 }
 input[type=text],input[type=password] {
     width: 50%;
@@ -41,50 +41,50 @@ input[type=text],input[type=password] {
 		<button id="button1" class="mainbutton" onclick="fun1()">Sign in</button>
 		<button id="button2" onclick="fun2()"  class="mainbutton">Sign up</button>
 		</div>
-		
+
 <script>
 
 
 	var account=[];
-	
+
 	account=getstored();
+
 	function storedata()
 	{
-	
 	//console.log("hi");
 	localStorage.account=JSON.stringify(account);
-	
 	}
-	function getstored()
+
+    function getstored()
      {
-     
+
      if(!localStorage.account)
      {
      localStorage.account=JSON.stringify([]);
      }
-     
+
      return(JSON.parse(localStorage.account));
      }
-     
+
 
    function fun1()
    {
-   
+
    if($("#signupform").length==1)
    {
    console.log("signup from was existing");
    $("#signupform").hide();
    }
-   
-   
+
+
      if($("#signinform").length==1)
      {
      console.log("sign in from exists already");
      $("#signinform").show();
       return;
      }
-   
-   
+
+
    $("body ").append("<form id='signinform' ></form>");
    //console.log($("#signinform").html());
    $("#signinform").append("<label >Name</label>");
@@ -100,22 +100,22 @@ input[type=text],input[type=password] {
    $("#signinform").append("<input type='password'  id='signinpass' placeholder='*******'></input>");
    $("#signinform").append("<br></br>");
    $("#signinform").append("<button type='submit' id='signinbutton' width='50%'>signin</button>");
-   
-   
+
+
    $("#signinbutton").click(function(e)
 	{
-	
+
 	 e.preventDefault();
-	 
+
 	if(checkinputs("signin")!=1)
 	{
 	//console.log("all inputs are not filled");
    	return;
    	}
-   
-  //console.log("all inputs are filled"); 
-  
-  
+
+  //console.log("all inputs are filled");
+
+
   function sessionstore(element,value)
   {
   if (typeof(Storage) !== "undefined") {
@@ -127,17 +127,17 @@ input[type=text],input[type=password] {
     document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
 }
   }
-  
-  
+
+
    var details=getstored();
-   
+
    var useridflag=0;
    var nameflag=0;
    var passflag=0;
-   
+
    for(var i=0;i<details.length;i++)
    {
-   
+
    if(details[i].userid==$("#signinuser").val())
    {
    useridflag=1;
@@ -147,22 +147,22 @@ input[type=text],input[type=password] {
 	   	   	console.log(details[i].password);
 	   	   	console.log($("#signinpass").val());*/
 	   	   	nameflag=1;
-	   	   	
+
 	   		if(details[i].password==$("#signinpass").val())
 	   		{
 	   		/*console.log("password matched");*/
 	   		passflag=1;
 	   		sessionstore("userid",$("#signinuser").val())
 	   		if($("#signinname").val()=='admin')
-	   		window.location='adminorderpage.html';
+	   		window.location='index2.html';
 	   		else
 	   		window.location='saleproduct.html';
 	   		}
 	   	}
    	}
    }
-   
-   
+
+
    if(useridflag==0 && $("#signuserer").length==0)
    {
     $("#signinuser").after("<label id='signuserer'><font color='red'>user do not exists</font></label>");
@@ -172,29 +172,29 @@ input[type=text],input[type=password] {
    //console.log("user dont exists");
    $("#signinname").after("<label id='nameer'><font color='red'>user name do not exists</font></label>");
    }
-   
+
    else if(passflag==0 && $("#passer").length==0)
     $("#signinpass").after("<label id='passer'><font color='red'>Wrong password</font></label>");
-   
+
    });
-   
+
    }
    function fun2()
    {
-   
+
      if($("#signinform").length==1)
      $("#signinform").hide();
-   
+
      if($("#signupform").length==1)
      {
      console.log("sign up from exists already");
      $("#signupform").show();
       return;
      }
-   
-  
-   
-   
+
+
+
+
    $("body").append("<form id='signupform' ></form>");
    //console.log($("#signupform").html());
    $("#signupform").append("<label >Name</label>");
@@ -215,103 +215,103 @@ input[type=text],input[type=password] {
    $("#signupform").append("<br></br>");
    $("#signupform").append("<button type='submit' id='signupbutton' width='50%'>signup</button>");
    $("#signupform").append("<br></br>");
-   
-   
-   
+
+
+
 	$("#signupbutton").click(function(e)
 	{
-	
+
 	 e.preventDefault();
-	 
+
 	if(checkinputs("signup")!=1)
 	{
    	return;
    	}
-   	
+
    	 var a=getstored()
    	 for(var i=0;i<a.length;i++)
    	 {
-	   	 
+
 	   	 if($("#userid").val()==a[i].userid)
 	   	 {
 	   	 $("#userid").after("<label id='userer'><font color='red'>user already exists</font></label>");
 	   	 return;
 	   	 }
-   	 
+
    	 }
-   	 
+
    	if($("#userer").length==1)
    	$("#userer").hide();
-   	
-   	
-   	
-   	
+
+
+
+
 	var object=
 	{
 	userid:$("#userid").val(),
 	name:$("#name").val(),
 	email:$("#email").val(),
-	password:$("#pass").val()	
+	password:$("#pass").val()
 	}
-	
-	account.push(object);	
+
+	account.push(object);
 	storedata();
 	window.location.href="userloginpage.html";
 	alert("signup successfull");
-	
+
 	});
-	
-		
-		
-		
-   
+
+
+
+
+
    }
-   
+
   function checkinputs(a)
   {
-  
+
   var flag=1;
-  
+
   if(a=="signup")
   {
   console.log("signup here");
-  
+
 	  if ($('#name').val() == '') {
 		$('#name').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#name').css('border-color', '');
 	}
-	
-	
+
+
 	if ($('#email').val() == '') {
 		$('#email').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#email').css('border-color', '');
 	}
-	
-	
-	
-	
+
+
+
+
 	if ($('#pass').val() == '') {
 		$('#pass').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#pass').css('border-color', '');
 	}
-	
+
 	if ($('#userid').val() == '') {
 		$('#userid').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#userid').css('border-color', '');
 	}
@@ -319,38 +319,38 @@ input[type=text],input[type=password] {
 
     return flag;
   }
-  
+
    else if(a=="signin")
   {
   console.log("sigin here");
-  
+
 	  if ($('#signinname').val() == '') {
 		$('#signinname').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#signinname').css('border-color', '');
 	}
-	
+
 	 if ($('#signinuser').val() == '') {
 		$('#signinuser').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#signinuser').css('border-color', '');
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	if ($('#signpass').val() == '') {
 		$('#signpass').css('border-color', 'red');
 		flag=0;
 	}
-	
+
 	else {
 		$('#signinpass').css('border-color', '');
 	}
@@ -358,12 +358,12 @@ input[type=text],input[type=password] {
 
     return flag;
   }
-  
-  
-  } 
-   
 
 
-</script>		
+  }
+
+
+
+</script>
 		</body>
 </html>

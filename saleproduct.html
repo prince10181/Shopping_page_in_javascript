@@ -31,14 +31,17 @@ button
     border: 2px solid grey;
   border-radius: 5px;
 }
-body {background-color:	LightBlue;}
+body
+{
+  background-color:#c9cad6;
+}
 
 </style>
 </head>
 <body onload="start()" >
 
 
-<h1 id="h1tag"><font color="Purple">Shopping page</font></h1>
+<h1 id="h1tag"><font color="#6f2e2e">Shopping page</font></h1>
 
 <div id="divdisplay" >
 
@@ -113,7 +116,7 @@ body {background-color:	LightBlue;}
 
    var adminarray=getstoredadminarray();
 
-   function getstoredorderid()
+     function getstoredorderid()
      {
 
      if(!localStorage.orderid)
@@ -124,7 +127,7 @@ body {background-color:	LightBlue;}
      return(JSON.parse(localStorage.orderid));
      }
 
-   function getstoredadminarray()
+     function getstoredadminarray()
      {
 
      if(!localStorage.adminarray)
@@ -137,7 +140,7 @@ body {background-color:	LightBlue;}
 
 
 
-   function getstoreddata()
+     function getstoreddata()
      {
 
      if(!localStorage.data)
@@ -147,6 +150,7 @@ body {background-color:	LightBlue;}
 
      return(JSON.parse(localStorage.data));
      }
+
    var ulid="1"
 
     var ii=0;
@@ -291,7 +295,7 @@ body {background-color:	LightBlue;}
 		}
 
 	}
-	cart.splice(index,1);
+	 cart.splice(index,1);
 	 localStorage.cart=JSON.stringify(cart);
 
 	}
@@ -370,7 +374,7 @@ body {background-color:	LightBlue;}
     {
 
       //console.log(adminarray.usercart);
-      if(adminarray[j].usercart[0].userid=sessionStorage.getItem("userid"))
+      if(adminarray[j].usercart[0].userid==sessionStorage.getItem("userid"))
       {
           displayproducts(adminarray[j].orderid,document.getElementById("orderul1"),0,0,0);
 
@@ -463,6 +467,7 @@ body {background-color:	LightBlue;}
   function add1(productid)
 	{
 
+    productarray=getstoreddata();
 		for(var j=0;j<productarray.length;j++)
 		{
 
@@ -484,10 +489,11 @@ body {background-color:	LightBlue;}
 					 if(cart[i][jj].roll==productid)
 					 {
 					 console.log("maximum quantity available is "+productarray[j].quantity);
-					 var x= Number(document.getElementById(x).value) +Number(cart[i][jj].quantity);
 
-					 if(x<=productarray[j].quantity)
-					 cart[i][jj].quantity=x;
+					 var y= Number(document.getElementById(x).value) +Number(cart[i][jj].quantity);
+
+					 if(y<=productarray[j].quantity)
+					 cart[i][jj].quantity=y;
 
 					 else
 					 alert("maximum available of this item quantity is "+ productarray[j].quantity);
@@ -510,6 +516,7 @@ body {background-color:	LightBlue;}
 
 			//create new cart for user and store the cart on local storage
 			var userarray=[];
+      console.log(productarray[j]);
 			userarray.push(productarray[j]);
 			userarray[userarray.length -1].quantity=document.getElementById(x).value;
 			userarray[userarray.length -1].userid=sessionStorage.getItem("userid");
